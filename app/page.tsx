@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Download, Link, Mail, Share2 } from "lucide-react";
 import {
   DropdownMenu,
@@ -14,38 +15,51 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip";
 
-export default function ShareIconWithMenu() {
+export default function Home() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
+
   return (
     <div className="relative h-screen flex items-center justify-center">
       <TooltipProvider>
-        <DropdownMenu>
-          <Tooltip>
-            <TooltipTrigger asChild>
+        <DropdownMenu
+          onOpenChange={(open) => {
+            setIsDropdownOpen(open);
+            if (open) {
+              setIsTooltipOpen(false); 
+            }
+          }}
+        >
+          <Tooltip open={isDropdownOpen ? false : isTooltipOpen}>
+            <TooltipTrigger
+              asChild
+              onMouseEnter={() => !isDropdownOpen && setIsTooltipOpen(true)}
+              onMouseLeave={() => setIsTooltipOpen(false)}
+            >
               <DropdownMenuTrigger asChild>
-                <button className="p-2 cursor-pointer rounded  focus:outline-none">
+                <button className="p-2 cursor-pointer rounded focus:outline-none">
                   <Share2 className="h-7 w-7 text-gray-600 hover:text-gray-950" />
                 </button>
               </DropdownMenuTrigger>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>share</p>
+              <p>Share</p>
             </TooltipContent>
           </Tooltip>
 
-          <DropdownMenuContent className="w-full mt-1">
-            <DropdownMenuItem className="cursor-pointer flex">
-              <Link size={25} className="text-gray-600 hover:text-gray-950"/>
-              <span className="text-gray-600 hover:text-gray-800">Share on Twitter</span>
+          <DropdownMenuContent className="w-56 mt-1">
+            <DropdownMenuItem className="cursor-pointer flex gap-2">
+              <Link size={20} className="text-gray-600" />
+              <span>Share on Twitter</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer flex">
-              <Mail size={25} className="text-gray-600 hover:text-gray-950"/>
-              <span className="text-gray-600 hover:text-gray-800">Share on Mail</span>
+            <DropdownMenuItem className="cursor-pointer flex gap-2">
+              <Mail size={20} className="text-gray-600" />
+              <span>Share on Mail</span>
             </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer flex">
-              <Download size={25} className="text-gray-600 hover:text-gray-950"/>
-              <span className="text-gray-600 hover:text-gray-800">Download</span>
+            <DropdownMenuItem className="cursor-pointer flex gap-2">
+              <Download size={20} className="text-gray-600" />
+              <span>Download</span>
             </DropdownMenuItem>
-           
           </DropdownMenuContent>
         </DropdownMenu>
       </TooltipProvider>
